@@ -9,10 +9,14 @@
 	</ul>
 
 	<!-- Tab panes -->
+	<code>
+		<pre>{{ { servername, serverData } }}</pre>
+	</code>
+
 	<div class="tab-content">
 		<div v-if="servername != ''" class="tab-pane active" role="tabpanel">
 			<h3 class="mt-2">Screen: {{ servername }} - {{ status[0].toUpperCase() + status.slice(1) }}</h3>
-			<!-- <pre>{{ serverData }}</pre> -->
+
 			<div v-if="serverData != null">
 				<h5>
 					{{ serverData.state }} - TPS: {{ serverData.tps }} / 20 Memory: {{ serverData.memory }} Player: {{ serverData.onlineplayers }} /
@@ -33,7 +37,8 @@
 							class="form-control"
 							placeholder="Command to Send to Server"
 							aria-label="Command to Send to Server"
-							aria-describedby="button-addon2" />
+							aria-describedby="button-addon2"
+						/>
 						<button class="btn btn-outline-primary" type="submit">Send</button>
 					</div>
 				</form>
@@ -45,7 +50,7 @@
 <script setup lang="ts">
 const servername = ref('');
 const command = ref('');
-const API_URL = 'http://sys.jodu555.de:9090/';
+const API_URL = 'http://big.jodu555.de:9193/';
 
 async function changeServer(server: string) {
 	servername.value = server;
@@ -83,7 +88,7 @@ const { data: serverList, execute: executeServerList } = await useAsyncData<{ se
 	},
 	{
 		server: false,
-	}
+	},
 );
 
 const {
@@ -106,7 +111,7 @@ const {
 	{
 		server: false,
 		// lazy: true,
-	}
+	},
 );
 
 interface ServerInfoResponse {
@@ -121,12 +126,10 @@ interface ServerInfoResponse {
 const { data: serverData, execute: executeServerData } = await useAsyncData<ServerInfoResponse>(
 	'serverData',
 	async () => {
-		let res = null;
 		if (servername.value !== 'Proxy') {
-			res = await fetch(`${API_URL}server?action=info&servername=${servername.value}`);
+			const res = await fetch(`${API_URL}server?action=info&servername=${servername.value}`);
 
 			const json = await res.json();
-			console.log(json);
 
 			return json;
 		}
@@ -135,7 +138,7 @@ const { data: serverData, execute: executeServerData } = await useAsyncData<Serv
 	{
 		server: false,
 		immediate: false,
-	}
+	},
 );
 
 let interval: NodeJS.Timeout;

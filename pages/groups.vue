@@ -49,7 +49,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-const API_URL = 'http://sys.jodu555.de:9090/';
+const API_URL = 'http://big.jodu555.de:9193/';
 const groupname = ref('');
 
 async function changeGroup(group: string) {
@@ -72,7 +72,7 @@ const {
 	},
 	{
 		server: false,
-	}
+	},
 );
 
 interface ServerGroupResponse {
@@ -97,7 +97,7 @@ const { data: groupInfo, execute: executeGroupInfo } = await useAsyncData<Server
 	{
 		server: false,
 		immediate: false,
-	}
+	},
 );
 </script>
 <style lang=""></style>
